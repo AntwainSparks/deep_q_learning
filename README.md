@@ -97,7 +97,6 @@ GPU acceleration helps, but refining the algorithm (DDQN vs DQN) is essential to
 1. Clone this repo and install requirements (`pip install -r requirements.txt`)
 2. Run training scripts for CPU/GPU DQN and DDQN
 3. Generate analysis charts and figures using included scripts (`comparison.py`, `eval_to_chart.py`, etc.)
-4. Build the full doc using `build_program_doc.py` for Word export, or refer to this README for a summary.
 
 ---
 
