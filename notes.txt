@@ -1,0 +1,70 @@
+===============================
+   Run Notes – DQN CartPole
+===============================
+
+Evaluation
+-------------
+# Default evaluation (no render, just score)
+python dqn_cartpole.py --eval --checkpoint runs\dqn_cartpole.pt --eval_episodes 1
+
+# Live window (human render mode)
+python dqn_cartpole.py --eval --checkpoint runs\dqn_cartpole.pt --eval_episodes 1 --render
+
+# Save MP4 video (no live window)
+python dqn_cartpole.py --eval --checkpoint runs\dqn_cartpole.pt --eval_episodes 2 --video_dir runs\video
+
+# Save trajectory (for viz_trajectory.py plots/animation)
+python dqn_cartpole.py --eval --checkpoint runs\dqn_cartpole.pt --eval_episodes 1 --save_trajectory --traj_path runs\trajectory.npz
+
+
+
+Training
+------------
+# CPU baseline
+python dqn_cartpole2.py --episodes 800 --seed 42 --eps_decay_steps 20000 --eps_end 0.01 --batch_size 64 --buffer_size 100000 --min_buffer 5000 --lr 5e-4 --target_update_every 500 --log_every 20 --cpu --run_dir runs_cpu_baseline
+
+# GPU DQN
+python dqn_cartpole1.py --episodes 800 --seed 42 --eps_decay_steps 20000 --eps_end 0.01 --batch_size 64 --buffer_size 100000 --min_buffer 5000 --lr 5e-4 --target_update_every 500 --log_every 20 --run_dir runs_gpu_dqn
+
+# GPU Double DQN (DDQN, tuned)
+python dqn_cartpole.py --episodes 800 --eps_decay_steps 20000 --eps_end 0.01 --batch_size 64 --buffer_size 100000 --min_buffer 5000 --lr 5e-4 --updates_per_step 2 --tau 0.005 --double --run_dir runs_gpu_ddqn --log_every 20
+
+
+Model checkpoints
+---------------------
+CPU baseline → runs_cpu_baseline/dqn_cartpole.pt  
+GPU DQN      → runs_gpu_dqn/dqn_cartpole.pt  
+GPU DDQN     → runs_gpu_ddqn/dqn_cartpole.pt  
+
+
+
+Comparison Workflow
+----------------------
+1. Train CPU baseline, GPU DQN, and GPU DDQN (different --run_dir).
+2. Evaluate each model:
+
+   python dqn_cartpole.py --eval --checkpoint runs_cpu_baseline/dqn_cartpole.pt --eval_episodes 20
+   python dqn_cartpole.py --eval --checkpoint runs_gpu_dqn/dqn_cartpole.pt --eval_episodes 20
+   python dqn_cartpole.py --eval --checkpoint runs_gpu_ddqn/dqn_cartpole.pt --eval_episodes 20
+
+3. Plot learning curves from rewards.csv in each run_dir.
+4. Use viz_trajectory.py on saved trajectories to visualize agent behavior.
+
+
+
+MP4-Video
+----------------------
+# CPU baseline
+python dqn_cartpole.py --eval --checkpoint runs_cpu_baseline/dqn_cartpole.pt --eval_episodes 1 --video_dir runs_cpu_baseline/video
+
+# GPU DQN
+python dqn_cartpole.py --eval --checkpoint runs_gpu_dqn/dqn_cartpole.pt --eval_episodes 1 --video_dir runs_gpu_dqn/video
+
+# GPU DDQN
+
+
+# Side-by-Side
+python .\compare_videos.py --out symposium_comparison.mp4 --max_secs 60
+
+
+
