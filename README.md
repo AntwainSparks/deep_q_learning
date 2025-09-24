@@ -102,3 +102,5 @@ GPU acceleration helps, but refining the algorithm (DDQN vs DQN) is essential to
 
 **For full implementation details and code, see the repository:**  
 https://github.com/AntwainSparks/deep_q_learning
+**Demonstration video of training results:**
+https://youtu.be/8YI0he9-Usc
